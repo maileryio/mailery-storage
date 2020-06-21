@@ -12,9 +12,21 @@ declare(strict_types=1);
 
 namespace Mailery\Storage;
 
-use Yiisoft\Yii\Filesystem\FilesystemInterface;
+use Mailery\Brand\Entity\Brand;
 
 interface BucketInterface
 {
-    public function getFilesystem(): FilesystemInterface;
+    /**
+     * @param string $location
+     * @param string $contents
+     * @param array $config
+     * @return void
+     */
+    public function write(string $location, string $contents, array $config = []): void;
+
+    /**
+     * @param Brand $brand
+     * @return self
+     */
+    public function withBrand(Brand $brand): self;
 }

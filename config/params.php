@@ -46,9 +46,6 @@ return [
                     LocalFilesystemAdapter::DISALLOW_LINKS,
                 ],
             ],
-            'aliases' => [
-                '@cache' => '@root/cache',
-            ],
         ],
         RuntimeStorageInterface::class => [
             'adapter' => [
@@ -68,9 +65,6 @@ return [
                     LOCK_EX,
                     LocalFilesystemAdapter::DISALLOW_LINKS,
                 ],
-            ],
-            'aliases' => [
-                '@cache' => '@root/cache',
             ],
         ],
     ],

@@ -12,10 +12,16 @@ declare(strict_types=1);
 
 namespace Mailery\Storage;
 
+use Mailery\Brand\Entity\Brand;
 use Yiisoft\Yii\Filesystem\FilesystemInterface as Filesystem;
 
 class Bucket implements BucketInterface
 {
+    /**
+     * @var Brand
+     */
+    private Brand $brand;
+
     /**
      * @var Filesystem
      */
@@ -30,10 +36,35 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @return Filesystem
+     * {@inheritdoc}
      */
-    public function getFilesystem(): Filesystem
+    public function write(string $location, string $contents, array $config = []): void
     {
-        return $this->filesystem;
+        $this->filesystem->write($this->prefix($location), $contents, $config);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withBrand(Brand $brand): self
+    {
+        $new = clone $this;
+        $new->brand = $brand;
+
+        return $new;
+    }
+
+    /**
+     * @param string $location
+     * @throws \RuntimeException
+     * @return string
+     */
+    private function prefix(string $location): string
+    {
+        if ($this->brand === null) {
+            throw new \RuntimeException('Brand entity required');
+        }
+
+        return sprintf('/%s/%s', $this->brand->getId(), ltrim($location, '/'));
     }
 }
