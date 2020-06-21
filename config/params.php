@@ -8,4 +8,10 @@ return [
             '@vendor/maileryio/mailery-storage/src/Entity',
         ],
     ],
+
+    'maileryio/mailery-storage' => [
+        'buckets' => [
+            ''
+        ],
+    ],
 ];

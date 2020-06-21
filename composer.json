@@ -18,7 +18,8 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4",
-        "foxy/foxy": "^1.0"
+        "foxy/foxy": "^1.0",
+        "yiisoft/yii-filesystem": "^3.0@dev"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
@@ -46,8 +47,9 @@
             "dev-master": "1.0.x-dev"
         },
         "config-plugin": {
+            "common": "config/common.php",
             "params": "config/params.php",
-            "web": "config/web.php"
+            "providers": "config/providers.php"
         }
     },
     "config": {
