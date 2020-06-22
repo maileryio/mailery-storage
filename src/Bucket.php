@@ -38,6 +38,14 @@ class Bucket implements BucketInterface
     /**
      * {@inheritdoc}
      */
+    public function has(string $location): bool
+    {
+        return $this->filesystem->fileExists($location);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function write(string $location, string $contents, array $config = []): void
     {
         $this->filesystem->write($this->prefix($location), $contents, $config);

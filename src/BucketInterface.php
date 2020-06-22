@@ -18,6 +18,12 @@ interface BucketInterface
 {
     /**
      * @param string $location
+     * @return bool
+     */
+    public function has(string $location): bool;
+
+    /**
+     * @param string $location
      * @param string $contents
      * @param array $config
      * @return void

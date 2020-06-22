@@ -38,9 +38,14 @@ class FileService
      */
     public function create(FileValueObject $valueObject): File
     {
-        $valueObject->getFileBucket()
-            ->withBrand($valueObject->getBrand())
-            ->write(
+        $fileBucket = $valueObject->getFileBucket()
+            ->withBrand($valueObject->getBrand());
+
+        if ($fileBucket->has($valueObject->getFilePath())) {
+            throw new \RuntimeException('File already exists');
+        }
+
+        $fileBucket->write(
                 $valueObject->getFilePath(),
                 $valueObject->getUploadedFile()->getStream()->getContents()
             );
