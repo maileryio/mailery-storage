@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Mailery\Storage\Service;
 
 use Mailery\Storage\Entity\File;
+use Mailery\Storage\Exception\FileAlreadyExistsException;
 use Mailery\Storage\ValueObject\BucketValueObject;
 use Mailery\Storage\ValueObject\FileValueObject;
 use Yiisoft\Yii\Filesystem\FilesystemInterface;
@@ -49,14 +50,18 @@ class StorageService
     /**
      * @param FileValueObject $fileValueObject
      * @param BucketValueObject $bucketValueObject
+     * @throws FileAlreadyExistsException
      * @return File
      */
     public function create(FileValueObject $fileValueObject, BucketValueObject $bucketValueObject): File
     {
-        $this->filesystem->write(
-            $fileValueObject->getLocation(),
-            $fileValueObject->getStream()->getContents()
-        );
+        $location = $fileValueObject->getLocation();
+
+        if ($this->filesystem->fileExists($location)) {
+            throw new FileAlreadyExistsException('File already exists with location "' . $location . '"');
+        }
+
+        $this->filesystem->write($location, $fileValueObject->getStream()->getContents());
 
         $bucket = $this->bucketService->getOrCreate($bucketValueObject);
 
