@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Service;
 
+use Mailery\Storage\ValueObject\FileValueObject;
+use Mailery\Storage\Entity\File;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Transaction;
-use Mailery\Storage\Entity\File;
-use Mailery\Storage\ValueObject\FileValueObject;
 
 class FileService
 {
@@ -38,21 +38,10 @@ class FileService
      */
     public function create(FileValueObject $valueObject): File
     {
-        $fileBucket = $valueObject->getFileBucket()
-            ->withBrand($valueObject->getBrand());
-
-        if ($fileBucket->has($valueObject->getFilePath())) {
-            throw new \RuntimeException('File already exists');
-        }
-
-        $fileBucket->write(
-                $valueObject->getFilePath(),
-                $valueObject->getUploadedFile()->getStream()->getContents()
-            );
-
         $file = (new File())
-            ->setBrand($valueObject->getBrand())
-            ->setFilePath($valueObject->getFilePath())
+            ->setBucket($valueObject->getBucket())
+            ->setName($valueObject->getName())
+            ->setPath($valueObject->getLocation())
         ;
 
         $tr = new Transaction($this->orm);
@@ -60,36 +49,5 @@ class FileService
         $tr->run();
 
         return $file;
-    }
-
-    /**
-     * @param File $file
-     * @param FileValueObject $valueObject
-     * @return File
-     */
-    public function update(File $file, FileValueObject $valueObject): File
-    {
-        $file = $file
-            ->setBrand($valueObject->getBrand())
-        ;
-
-        $tr = new Transaction($this->orm);
-        $tr->persist($file);
-        $tr->run();
-
-        return $file;
-    }
-
-    /**
-     * @param File $file
-     * @return bool
-     */
-    public function delete(File $file): bool
-    {
-        $tr = new Transaction($this->orm);
-        $tr->delete($file);
-        $tr->run();
-
-        return true;
     }
 }

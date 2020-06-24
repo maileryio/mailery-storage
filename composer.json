@@ -19,6 +19,10 @@
     "require": {
         "php": "^7.4",
         "foxy/foxy": "^1.0",
+        "maileryio/mailery-common": "^1.0@dev",
+        "maileryio/mailery-web": "^1.0@dev",
+        "ramsey/uuid": "^4.0",
+        "yiisoft/router": "^3.0@dev",
         "yiisoft/yii-filesystem": "^3.0@dev"
     },
     "require-dev": {

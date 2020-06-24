@@ -10,10 +10,4 @@ declare(strict_types=1);
  * @copyright Copyright (c) 2020, Mailery (https://mailery.io/)
  */
 
-use Mailery\Storage\BucketConfigs;
-
-return [
-    BucketConfigs::class => static function () use ($params) {
-        return new BucketConfigs($params['maileryio/mailery-storage']['buckets']);
-    },
-];
+return [];

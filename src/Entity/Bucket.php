@@ -18,12 +18,12 @@ use Mailery\Brand\Entity\Brand;
 
 /**
  * @Cycle\Annotated\Annotation\Entity(
- *      table = "files",
- *      repository = "Mailery\Storage\Repository\FileRepository",
+ *      table = "buckets",
+ *      repository = "Mailery\Storage\Repository\BucketRepository",
  *      mapper = "Mailery\Storage\Mapper\DefaultMapper"
  * )
  */
-class File implements LoggableEntityInterface
+class Bucket implements LoggableEntityInterface
 {
     use LoggableEntityTrait;
 
@@ -34,10 +34,10 @@ class File implements LoggableEntityInterface
     private $id;
 
     /**
-     * @Cycle\Annotated\Annotation\Relation\BelongsTo(target = "Mailery\Storage\Entity\Bucket", nullable = false)
+     * @Cycle\Annotated\Annotation\Relation\BelongsTo(target = "Mailery\Brand\Entity\Brand", nullable = false)
      * @var Brand
      */
-    private $bucket;
+    private $brand;
 
     /**
      * @Cycle\Annotated\Annotation\Column(type = "string(255)")
@@ -49,14 +49,14 @@ class File implements LoggableEntityInterface
      * @Cycle\Annotated\Annotation\Column(type = "string(255)")
      * @var string
      */
-    private $path;
+    private $title;
 
     /**
      * @return string
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getTitle();
     }
 
     /**
@@ -79,20 +79,20 @@ class File implements LoggableEntityInterface
     }
 
     /**
-     * @return Bucket
+     * @return Brand
      */
-    public function getBucket(): Bucket
+    public function getBrand(): Brand
     {
-        return $this->bucket;
+        return $this->brand;
     }
 
     /**
-     * @param Bucket $bucket
+     * @param Brand $brand
      * @return self
      */
-    public function setBucket(Bucket $bucket): self
+    public function setBrand(Brand $brand): self
     {
-        $this->bucket = $bucket;
+        $this->brand = $brand;
 
         return $this;
     }
@@ -119,18 +119,18 @@ class File implements LoggableEntityInterface
     /**
      * @return string
      */
-    public function getPath(): string
+    public function getTitle(): string
     {
-        return $this->path;
+        return $this->title;
     }
 
     /**
-     * @param string $path
+     * @param string $title
      * @return self
      */
-    public function setPath(string $path): self
+    public function setTitle(string $title): self
     {
-        $this->path = $path;
+        $this->title = $title;
 
         return $this;
     }

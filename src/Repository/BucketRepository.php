@@ -12,11 +12,12 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Repository;
 
+use Mailery\Storage\Entity\Bucket;
 use Cycle\ORM\Select\Repository;
 use Mailery\Brand\Entity\Brand;
 use Mailery\Widget\Search\Data\Reader\SelectDataReader;
 
-class FileRepository extends Repository
+class BucketRepository extends Repository
 {
     /**
      * @param array $scope
@@ -29,6 +30,15 @@ class FileRepository extends Repository
     }
 
     /**
+     * @param string $name
+     * @return Bucket|null
+     */
+    public function findByName(string $name): ?Bucket
+    {
+        return $this->findOne(['name' => $name]);
+    }
+
+    /**
      * @param Brand $brand
      * @return self
      */
@@ -36,9 +46,8 @@ class FileRepository extends Repository
     {
         $repo = clone $this;
         $repo->select
-            ->with('bucket')
             ->andWhere([
-                'bucket.brand_id' => $brand->getId(),
+                'brand_id' => $brand->getId(),
             ]);
 
         return $repo;

@@ -12,12 +12,10 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\ValueObject;
 
-use Mailery\Storage\Entity\Bucket;
 use Mailery\Brand\Entity\Brand;
 use Nyholm\Psr7\UploadedFile;
-use Psr\Http\Message\StreamInterface;
 
-class FileValueObject
+class BucketValueObject
 {
     /**
      * @var Brand
@@ -32,31 +30,7 @@ class FileValueObject
     /**
      * @var string
      */
-    private string $location;
-
-    /**
-     * @var Bucket
-     */
-    private Bucket $bucket;
-
-    /**
-     * @var StreamInterface
-     */
-    private StreamInterface $stream;
-
-    /**
-     * @param UploadedFile $uploadedFile
-     * @return self
-     */
-    public static function fromUploadedFile(UploadedFile $uploadedFile): self
-    {
-        $new = new self();
-
-        $new->name = $uploadedFile->getClientFilename();
-        $new->stream = $uploadedFile->getStream();
-
-        return $new;
-    }
+    private string $title;
 
     /**
      * @return Brand
@@ -77,25 +51,9 @@ class FileValueObject
     /**
      * @return string
      */
-    public function getLocation(): string
+    public function getTitle(): string
     {
-        return $this->location;
-    }
-
-    /**
-     * @return Bucket
-     */
-    public function getBucket(): Bucket
-    {
-        return $this->bucket;
-    }
-
-    /**
-     * @return StreamInterface
-     */
-    public function getStream(): StreamInterface
-    {
-        return $this->stream;
+        return $this->title;
     }
 
     /**
@@ -111,25 +69,25 @@ class FileValueObject
     }
 
     /**
-     * @param Bucket $bucket
+     * @param string $name
      * @return self
      */
-    public function withBucket(Bucket $bucket): self
+    public function withName(string $name): self
     {
         $new = clone $this;
-        $new->bucket = $bucket;
+        $new->name = $name;
 
         return $new;
     }
 
     /**
-     * @param string $location
+     * @param string $title
      * @return self
      */
-    public function withLocation(string $location): self
+    public function withTitle(string $title): self
     {
         $new = clone $this;
-        $new->location = $location;
+        $new->title = $title;
 
         return $new;
     }
