@@ -12,12 +12,10 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Service;
 
-use Yiisoft\Yii\Filesystem\FilesystemInterface;
-use Mailery\Storage\Service\FileService;
-use Mailery\Storage\Service\BucketService;
-use Mailery\Storage\ValueObject\FileValueObject;
-use Mailery\Storage\ValueObject\BucketValueObject;
 use Mailery\Storage\Entity\File;
+use Mailery\Storage\ValueObject\BucketValueObject;
+use Mailery\Storage\ValueObject\FileValueObject;
+use Yiisoft\Yii\Filesystem\FilesystemInterface;
 
 class StorageService
 {
@@ -39,6 +37,7 @@ class StorageService
     /**
      * @param FileService $fileService
      * @param BucketService $bucketService
+     * @param FilesystemInterface $filesystem
      */
     public function __construct(FileService $fileService, BucketService $bucketService, FilesystemInterface $filesystem)
     {
@@ -48,7 +47,8 @@ class StorageService
     }
 
     /**
-     * @param FileValueObject $valueObject
+     * @param FileValueObject $fileValueObject
+     * @param BucketValueObject $bucketValueObject
      * @return File
      */
     public function create(FileValueObject $fileValueObject, BucketValueObject $bucketValueObject): File

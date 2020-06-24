@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Mailery\Storage\ValueObject;
 
 use Mailery\Brand\Entity\Brand;
-use Nyholm\Psr7\UploadedFile;
 
 class BucketValueObject
 {

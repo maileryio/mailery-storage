@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Service;
 
-use Mailery\Storage\ValueObject\FileValueObject;
-use Mailery\Storage\Entity\File;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Transaction;
+use Mailery\Storage\Entity\File;
+use Mailery\Storage\ValueObject\FileValueObject;
 
 class FileService
 {

@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Service;
 
-use Mailery\Brand\Entity\Brand;
-use Mailery\Storage\Repository\BucketRepository;
-use Mailery\Storage\ValueObject\BucketValueObject;
-use Mailery\Storage\Entity\Bucket;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Transaction;
+use Mailery\Brand\Entity\Brand;
+use Mailery\Storage\Entity\Bucket;
+use Mailery\Storage\Repository\BucketRepository;
+use Mailery\Storage\ValueObject\BucketValueObject;
 
 class BucketService
 {

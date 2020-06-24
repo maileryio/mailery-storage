@@ -14,7 +14,6 @@ namespace Mailery\Storage\Entity;
 
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityTrait;
-use Mailery\Brand\Entity\Brand;
 
 /**
  * @Cycle\Annotated\Annotation\Entity(
@@ -35,7 +34,7 @@ class File implements LoggableEntityInterface
 
     /**
      * @Cycle\Annotated\Annotation\Relation\BelongsTo(target = "Mailery\Storage\Entity\Bucket", nullable = false)
-     * @var Brand
+     * @var Bucket
      */
     private $bucket;
 

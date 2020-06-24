@@ -1,11 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * File storage module for Mailery Platform
+ * @link      https://github.com/maileryio/mailery-storage
+ * @package   Mailery\Storage
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2020, Mailery (https://mailery.io/)
+ */
+
 namespace Mailery\Storage\Factory;
 
-use Yiisoft\Yii\Filesystem\FilesystemInterface;
-use Mailery\Storage\Service\StorageService;
-use Mailery\Storage\Service\FileService;
 use Mailery\Storage\Service\BucketService;
+use Mailery\Storage\Service\FileService;
+use Mailery\Storage\Service\StorageService;
+use Yiisoft\Yii\Filesystem\FilesystemInterface;
 
 class StorageFactory
 {

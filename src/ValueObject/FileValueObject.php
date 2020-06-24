@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\ValueObject;
 
-use Mailery\Storage\Entity\Bucket;
 use Mailery\Brand\Entity\Brand;
+use Mailery\Storage\Entity\Bucket;
 use Nyholm\Psr7\UploadedFile;
 use Psr\Http\Message\StreamInterface;
 
@@ -52,7 +52,7 @@ class FileValueObject
     {
         $new = new self();
 
-        $new->name = $uploadedFile->getClientFilename();
+        $new->name = $uploadedFile->getClientFilename() ?? 'Generated file name';
         $new->stream = $uploadedFile->getStream();
 
         return $new;

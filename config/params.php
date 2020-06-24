@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use Mailery\Storage\Controller\FileController;
 use Mailery\Storage\Filesystem\FileStorageInterface;
 use Mailery\Storage\Filesystem\RuntimeStorageInterface;
-use Mailery\Storage\Controller\FileController;
 use Yiisoft\Router\Route;
 
 return [

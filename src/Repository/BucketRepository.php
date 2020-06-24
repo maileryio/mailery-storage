@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Repository;
 
-use Mailery\Storage\Entity\Bucket;
 use Cycle\ORM\Select\Repository;
 use Mailery\Brand\Entity\Brand;
+use Mailery\Storage\Entity\Bucket;
 use Mailery\Widget\Search\Data\Reader\SelectDataReader;
 
 class BucketRepository extends Repository
