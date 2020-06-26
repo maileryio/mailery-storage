@@ -14,9 +14,9 @@ namespace Mailery\Storage\Service;
 
 use Mailery\Storage\Entity\File;
 use Mailery\Storage\Exception\FileAlreadyExistsException;
+use Mailery\Storage\Provider\FilesystemProvider;
 use Mailery\Storage\ValueObject\BucketValueObject;
 use Mailery\Storage\ValueObject\FileValueObject;
-use Yiisoft\Yii\Filesystem\FilesystemInterface;
 
 class StorageService
 {
@@ -31,20 +31,20 @@ class StorageService
     private BucketService $bucketService;
 
     /**
-     * @var FilesystemInterface
+     * @var FilesystemProvider
      */
-    private FilesystemInterface $filesystem;
+    private FilesystemProvider $filesystemProvider;
 
     /**
      * @param FileService $fileService
      * @param BucketService $bucketService
-     * @param FilesystemInterface $filesystem
+     * @param FilesystemProvider $filesystemProvider
      */
-    public function __construct(FileService $fileService, BucketService $bucketService, FilesystemInterface $filesystem)
+    public function __construct(FileService $fileService, BucketService $bucketService, FilesystemProvider $filesystemProvider)
     {
         $this->fileService = $fileService;
         $this->bucketService = $bucketService;
-        $this->filesystem = $filesystem;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
@@ -56,12 +56,13 @@ class StorageService
     public function create(FileValueObject $fileValueObject, BucketValueObject $bucketValueObject): File
     {
         $location = $fileValueObject->getLocation();
+        $filesystem = $this->filesystemProvider->getFilesystem($bucketValueObject->getFilesystem());
 
-        if ($this->filesystem->fileExists($location)) {
+        if ($filesystem->fileExists($location)) {
             throw new FileAlreadyExistsException('File already exists with location "' . $location . '"');
         }
 
-        $this->filesystem->write($location, $fileValueObject->getStream()->getContents());
+        $filesystem->write($location, $fileValueObject->getStream()->getContents());
 
         $bucket = $this->bucketService->getOrCreate($bucketValueObject);
 

@@ -41,7 +41,7 @@ class FileService
         $file = (new File())
             ->setBucket($valueObject->getBucket())
             ->setName($valueObject->getName())
-            ->setPath($valueObject->getLocation())
+            ->setLocation($valueObject->getLocation())
         ;
 
         $tr = new Transaction($this->orm);

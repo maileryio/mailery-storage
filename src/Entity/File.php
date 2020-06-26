@@ -48,7 +48,7 @@ class File implements LoggableEntityInterface
      * @Cycle\Annotated\Annotation\Column(type = "string(255)")
      * @var string
      */
-    private $path;
+    private $location;
 
     /**
      * @return string
@@ -118,19 +118,27 @@ class File implements LoggableEntityInterface
     /**
      * @return string
      */
-    public function getPath(): string
+    public function getLocation(): string
     {
-        return $this->path;
+        return $this->location;
     }
 
     /**
-     * @param string $path
+     * @param string $location
      * @return self
      */
-    public function setPath(string $path): self
+    public function setLocation(string $location): self
     {
-        $this->path = $path;
+        $this->location = $location;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilesystem(): string
+    {
+        return $this->getBucket()->getFilesystem();
     }
 }

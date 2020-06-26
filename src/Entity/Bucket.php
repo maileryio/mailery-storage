@@ -22,6 +22,11 @@ use Mailery\Brand\Entity\Brand;
  *      repository = "Mailery\Storage\Repository\BucketRepository",
  *      mapper = "Mailery\Storage\Mapper\DefaultMapper"
  * )
+ * @Cycle\Annotated\Annotation\Table(
+ *      indexes = {
+ *          @Cycle\Annotated\Annotation\Table\Index(columns = {"name", "brand_id"}, unique = true)
+ *      }
+ * )
  */
 class Bucket implements LoggableEntityInterface
 {
@@ -50,6 +55,12 @@ class Bucket implements LoggableEntityInterface
      * @var string
      */
     private $title;
+
+    /**
+     * @Cycle\Annotated\Annotation\Column(type = "string(255)")
+     * @var string
+     */
+    private $filesystem;
 
     /**
      * @return string
@@ -131,6 +142,25 @@ class Bucket implements LoggableEntityInterface
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilesystem(): string
+    {
+        return $this->filesystem;
+    }
+
+    /**
+     * @param string $filesystem
+     * @return self
+     */
+    public function setFilesystem(string $filesystem): self
+    {
+        $this->filesystem = $filesystem;
 
         return $this;
     }

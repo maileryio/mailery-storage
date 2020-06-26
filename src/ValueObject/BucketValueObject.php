@@ -32,6 +32,11 @@ class BucketValueObject
     private string $title;
 
     /**
+     * @var string
+     */
+    private string $filesystem;
+
+    /**
      * @return Brand
      */
     public function getBrand(): Brand
@@ -53,6 +58,14 @@ class BucketValueObject
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilesystem(): string
+    {
+        return $this->filesystem;
     }
 
     /**
@@ -87,6 +100,18 @@ class BucketValueObject
     {
         $new = clone $this;
         $new->title = $title;
+
+        return $new;
+    }
+
+    /**
+     * @param string $filesystem
+     * @return self
+     */
+    public function withFilesystem(string $filesystem): self
+    {
+        $new = clone $this;
+        $new->filesystem = $filesystem;
 
         return $new;
     }

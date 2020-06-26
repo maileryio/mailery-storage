@@ -43,7 +43,8 @@ class BucketService
         $bucket = (new Bucket())
             ->setBrand($valueObject->getBrand())
             ->setName($valueObject->getName())
-            ->setTitle($valueObject->getTitle());
+            ->setTitle($valueObject->getTitle())
+            ->setFilesystem($valueObject->getFilesystem());
 
         $tr = new Transaction($this->orm);
         $tr->persist($bucket);
