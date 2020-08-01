@@ -22,8 +22,8 @@ return [
         '@storage' => '@root/storage',
     ],
 
-    'cycle.common' => [
-        'entityPaths' => [
+    'yiisoft/yii-cycle' => [
+        'annotated-entity-paths' => [
             '@vendor/maileryio/mailery-storage/src/Entity',
         ],
     ],
