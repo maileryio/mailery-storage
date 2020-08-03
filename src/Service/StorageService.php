@@ -17,6 +17,7 @@ use Mailery\Storage\Exception\FileAlreadyExistsException;
 use Mailery\Storage\Provider\FilesystemProvider;
 use Mailery\Storage\ValueObject\BucketValueObject;
 use Mailery\Storage\ValueObject\FileValueObject;
+use Mailery\Storage\Filesystem\FileInfo;
 
 class StorageService
 {
@@ -69,5 +70,14 @@ class StorageService
         return $this->fileService->create(
             $fileValueObject->withBucket($bucket)
         );
+    }
+
+    /**
+     * @param File $file
+     * @return FileInfo
+     */
+    public function getFileInfo(File $file): FileInfo
+    {
+        return (new FileInfo($this->filesystemProvider))->withFile($file);
     }
 }

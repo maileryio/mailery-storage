@@ -15,7 +15,7 @@ namespace Mailery\Storage\Controller;
 use Cycle\ORM\ORMInterface;
 use Mailery\Brand\Service\BrandLocator;
 use Mailery\Storage\Entity\File;
-use Mailery\Storage\Provider\FilesystemProvider;
+use Mailery\Storage\Service\StorageService;
 use Mailery\Storage\Repository\FileRepository;
 use Mailery\Storage\WebController;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
@@ -26,9 +26,9 @@ use Yiisoft\View\WebView;
 class FileController extends WebController
 {
     /**
-     * @var FilesystemProvider
+     * @var StorageService
      */
-    private FilesystemProvider $filesystemProvider;
+    private StorageService $storageService;
 
     /**
      * @param BrandLocator $brandLocator
@@ -36,7 +36,7 @@ class FileController extends WebController
      * @param Aliases $aliases
      * @param WebView $view
      * @param ORMInterface $orm
-     * @param FilesystemProvider $filesystemProvider
+     * @param StorageService $storageService
      */
     public function __construct(
         BrandLocator $brandLocator,
@@ -44,9 +44,9 @@ class FileController extends WebController
         Aliases $aliases,
         WebView $view,
         ORMInterface $orm,
-        FilesystemProvider $filesystemProvider
+        StorageService $storageService
     ) {
-        $this->filesystemProvider = $filesystemProvider;
+        $this->storageService = $storageService;
         parent::__construct($brandLocator, $responseFactory, $aliases, $view, $orm);
     }
     /**
@@ -59,13 +59,13 @@ class FileController extends WebController
             return $this->getResponseFactory()->createResponse(404);
         }
 
-        $filesystem = $this->filesystemProvider->getFilesystem($file->getFilesystem());
+        $fileInfo = $this->storageService->getFileInfo($file);
 
-        if (!$filesystem->fileExists($file->getLocation())) {
+        if (!$fileInfo->fileExists()) {
             return $this->getResponseFactory()->createResponse(404);
         }
 
-        $fileStream = $filesystem->readStream($file->getLocation());
+        $fileStream = $fileInfo->getStream();
         $fileStat = fstat($fileStream);
 
         if (ob_get_level()) {
