@@ -12,42 +12,45 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Controller;
 
-use Cycle\ORM\ORMInterface;
 use Mailery\Brand\Service\BrandLocator;
-use Mailery\Storage\Entity\File;
 use Mailery\Storage\Service\StorageService;
 use Mailery\Storage\Repository\FileRepository;
-use Mailery\Storage\WebController;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Yiisoft\Aliases\Aliases;
-use Yiisoft\View\WebView;
 
-class FileController extends WebController
+class FileController
 {
+    /**
+     * @var ResponseFactory
+     */
+    private ResponseFactory $responseFactory;
+
     /**
      * @var StorageService
      */
     private StorageService $storageService;
 
     /**
-     * @param BrandLocator $brandLocator
+     * @var FileRepository
+     */
+    private FileRepository $fileRepository;
+
+    /**
      * @param ResponseFactory $responseFactory
-     * @param Aliases $aliases
-     * @param WebView $view
-     * @param ORMInterface $orm
      * @param StorageService $storageService
+     * @param FileRepository $fileRepository
+     * @param BrandLocator $brandLocator
      */
     public function __construct(
-        BrandLocator $brandLocator,
         ResponseFactory $responseFactory,
-        Aliases $aliases,
-        WebView $view,
-        ORMInterface $orm,
-        StorageService $storageService
+        StorageService $storageService,
+        FileRepository $fileRepository,
+        BrandLocator $brandLocator
     ) {
+        $this->responseFactory = $responseFactory;
         $this->storageService = $storageService;
-        parent::__construct($brandLocator, $responseFactory, $aliases, $view, $orm);
+        $this->fileRepository = $fileRepository
+            ->withBrand($brandLocator->getBrand());
     }
     /**
      * @param Request $request
@@ -55,14 +58,14 @@ class FileController extends WebController
     public function download(Request $request)
     {
         $fileId = $request->getAttribute('id');
-        if (empty($fileId) || ($file = $this->getFileRepository()->findByPK($fileId)) === null) {
-            return $this->getResponseFactory()->createResponse(404);
+        if (empty($fileId) || ($file = $this->fileRepository->findByPK($fileId)) === null) {
+            return $this->responseFactory->createResponse(404);
         }
 
         $fileInfo = $this->storageService->getFileInfo($file);
 
         if (!$fileInfo->fileExists()) {
-            return $this->getResponseFactory()->createResponse(404);
+            return $this->responseFactory->createResponse(404);
         }
 
         $fileStream = $fileInfo->getStream();
@@ -85,15 +88,5 @@ class FileController extends WebController
             print fread($fileStream, 1024);
         }
         fclose($fileStream);
-    }
-
-    /**
-     * @return FileRepository
-     */
-    private function getFileRepository(): FileRepository
-    {
-        return $this->getOrm()
-            ->getRepository(File::class)
-            ->withBrand($this->getBrandLocator()->getBrand());
     }
 }

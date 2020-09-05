@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-/**
- * File storage module for Mailery Platform
- * @link      https://github.com/maileryio/mailery-storage
- * @package   Mailery\Storage
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2020, Mailery (https://mailery.io/)
- */
+use Mailery\Storage\Repository\FileRepository;
+use Psr\Container\ContainerInterface;
+use Cycle\ORM\ORMInterface;
+use Mailery\Storage\Entity\File;
 
-return [];
+return [
+    FileRepository::class => static function (ContainerInterface $container) {
+        return $container
+            ->get(ORMInterface::class)
+            ->getRepository(File::class);
+    },
+];

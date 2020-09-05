@@ -12,10 +12,8 @@ declare(strict_types=1);
 
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
-use Mailery\Storage\Controller\FileController;
 use Mailery\Storage\Filesystem\FileStorageInterface;
 use Mailery\Storage\Filesystem\RuntimeStorageInterface;
-use Yiisoft\Router\Route;
 
 return [
     'aliases' => [
@@ -25,13 +23,6 @@ return [
     'yiisoft/yii-cycle' => [
         'annotated-entity-paths' => [
             '@vendor/maileryio/mailery-storage/src/Entity',
-        ],
-    ],
-
-    'router' => [
-        'routes' => [
-            '/storage/file/download' => Route::get('/brand/{brandId:\d+}/storage/file/download/{id:\d+}', [FileController::class, 'download'])
-                ->name('/storage/file/download'),
         ],
     ],
 
