@@ -13,5 +13,5 @@ declare(strict_types=1);
 use Mailery\Storage\Provider\FileStorageServiceProvider;
 
 return [
-    'FileStorage' => FileStorageServiceProvider::class,
+    'yiisoft/yii-filesystem/file-storage' => FileStorageServiceProvider::class,
 ];
