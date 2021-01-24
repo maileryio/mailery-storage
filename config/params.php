@@ -16,8 +16,10 @@ use Mailery\Storage\Filesystem\FileStorageInterface;
 use Mailery\Storage\Filesystem\RuntimeStorageInterface;
 
 return [
-    'aliases' => [
-        '@storage' => '@root/storage',
+    'yiisoft/aliases' => [
+        'aliases' => [
+            '@storage' => '@root/storage',
+        ],
     ],
 
     'yiisoft/yii-cycle' => [
