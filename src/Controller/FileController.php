@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Controller;
 
-use Mailery\Brand\Service\BrandLocator;
+use Mailery\Brand\BrandLocatorInterface as BrandLocator;
 use Mailery\Storage\Service\StorageService;
 use Mailery\Storage\Repository\FileRepository;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
