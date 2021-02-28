@@ -14,7 +14,7 @@ namespace Mailery\Storage\ValueObject;
 
 use Mailery\Brand\Entity\Brand;
 use Mailery\Storage\Entity\Bucket;
-use Nyholm\Psr7\UploadedFile;
+use HttpSoft\Message\UploadedFile;
 use Psr\Http\Message\StreamInterface;
 
 class FileValueObject
