@@ -14,6 +14,7 @@ namespace Mailery\Storage\Entity;
 
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityTrait;
+use Mailery\Brand\Entity\Brand;
 
 /**
  * @Cycle\Annotated\Annotation\Entity(
@@ -33,12 +34,6 @@ class File implements LoggableEntityInterface
     private $id;
 
     /**
-     * @Cycle\Annotated\Annotation\Relation\BelongsTo(target = "Mailery\Storage\Entity\Bucket", nullable = false)
-     * @var Bucket
-     */
-    private $bucket;
-
-    /**
      * @Cycle\Annotated\Annotation\Column(type = "string(255)")
      * @var string
      */
@@ -48,7 +43,25 @@ class File implements LoggableEntityInterface
      * @Cycle\Annotated\Annotation\Column(type = "string(255)")
      * @var string
      */
-    private $location;
+    private $title;
+
+    /**
+     * @Cycle\Annotated\Annotation\Column(type = "string(255)")
+     * @var string
+     */
+    private $mimeType;
+
+    /**
+     * @Cycle\Annotated\Annotation\Relation\BelongsTo(target = "Mailery\Brand\Entity\Brand", nullable = false)
+     * @var Brand
+     */
+    private $brand;
+
+    /**
+     * @Cycle\Annotated\Annotation\Column(type = "string(255)")
+     * @var string
+     */
+    private $bucket;
 
     /**
      * @return string
@@ -78,25 +91,6 @@ class File implements LoggableEntityInterface
     }
 
     /**
-     * @return Bucket
-     */
-    public function getBucket(): Bucket
-    {
-        return $this->bucket;
-    }
-
-    /**
-     * @param Bucket $bucket
-     * @return self
-     */
-    public function setBucket(Bucket $bucket): self
-    {
-        $this->bucket = $bucket;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName(): string
@@ -118,18 +112,18 @@ class File implements LoggableEntityInterface
     /**
      * @return string
      */
-    public function getLocation(): string
+    public function getTitle(): string
     {
-        return $this->location;
+        return $this->title;
     }
 
     /**
-     * @param string $location
+     * @param string $title
      * @return self
      */
-    public function setLocation(string $location): self
+    public function setTitle(string $title): self
     {
-        $this->location = $location;
+        $this->title = $title;
 
         return $this;
     }
@@ -137,8 +131,57 @@ class File implements LoggableEntityInterface
     /**
      * @return string
      */
-    public function getFilesystem(): string
+    public function getMimeType(): string
     {
-        return $this->getBucket()->getFilesystem();
+        return $this->mimeType;
+    }
+
+    /**
+     * @param string $mimeType
+     * @return self
+     */
+    public function setMimeType(string $mimeType): self
+    {
+        $this->mimeType = $mimeType;
+
+        return $this;
+    }
+
+    /**
+     * @return Brand
+     */
+    public function getBrand(): Brand
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param Brand $brand
+     * @return self
+     */
+    public function setBrand(Brand $brand): self
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBucket(): string
+    {
+        return $this->bucket;
+    }
+
+    /**
+     * @param string $bucket
+     * @return self
+     */
+    public function setBucket(string $bucket): self
+    {
+        $this->bucket = $bucket;
+
+        return $this;
     }
 }

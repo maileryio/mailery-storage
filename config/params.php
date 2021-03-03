@@ -28,6 +28,10 @@ return [
         ],
     ],
 
+    'maileryio/mailery-storage' => [
+        'buckets' => [],
+    ],
+
     'file.storage' => [
         FileStorageInterface::class => [
             'adapter' => [

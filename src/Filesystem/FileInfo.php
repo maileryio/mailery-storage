@@ -14,6 +14,8 @@ namespace Mailery\Storage\Filesystem;
 
 use Mailery\Storage\Entity\File;
 use Mailery\Storage\Provider\FilesystemProvider;
+use Mailery\Storage\Resolver\LocationResolver;
+use Yiisoft\Yii\Filesystem\FilesystemInterface;
 
 class FileInfo
 {
@@ -29,11 +31,20 @@ class FileInfo
     private FilesystemProvider $filesystemProvider;
 
     /**
-     * @param FilesystemProvider $filesystemProvider
+     * @var LocationResolver
      */
-    public function __construct(FilesystemProvider $filesystemProvider)
-    {
+    private LocationResolver $locationResolver;
+
+    /**
+     * @param FilesystemProvider $filesystemProvider
+     * @param LocationResolver $locationResolver
+     */
+    public function __construct(
+        FilesystemProvider $filesystemProvider,
+        LocationResolver $locationResolver
+    ) {
         $this->filesystemProvider = $filesystemProvider;
+        $this->locationResolver = $locationResolver;
     }
 
     /**
@@ -53,9 +64,8 @@ class FileInfo
      */
     public function fileExists(): bool
     {
-        return $this->filesystemProvider
-            ->getFilesystem($this->file->getFilesystem())
-            ->fileExists($this->file->getLocation());
+        return $this->getFilesystem()
+            ->fileExists($this->getLocation());
     }
 
     /**
@@ -63,9 +73,8 @@ class FileInfo
      */
     public function getFileSize(): int
     {
-        return $this->filesystemProvider
-            ->getFilesystem($this->file->getFilesystem())
-            ->fileSize($this->file->getLocation());
+        return $this->getFilesystem()
+            ->fileSize($this->getLocation());
     }
 
     /**
@@ -73,9 +82,8 @@ class FileInfo
      */
     public function getStream()
     {
-        return $this->filesystemProvider
-            ->getFilesystem($this->file->getFilesystem())
-            ->readStream($this->file->getLocation());
+        return $this->getFilesystem()
+            ->readStream($this->getLocation());
     }
 
     /**
@@ -96,4 +104,19 @@ class FileInfo
         return $lineCount;
     }
 
+    /**
+     * @return FilesystemInterface
+     */
+    private function getFilesystem(): FilesystemInterface
+    {
+        return $this->filesystemProvider->getFilesystem($this->file);
+    }
+
+    /**
+     * @return string
+     */
+    private function getLocation(): string
+    {
+        return (string) $this->locationResolver->resolve($this->file);
+    }
 }

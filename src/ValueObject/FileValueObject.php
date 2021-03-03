@@ -13,31 +13,37 @@ declare(strict_types=1);
 namespace Mailery\Storage\ValueObject;
 
 use Mailery\Brand\Entity\Brand;
-use Mailery\Storage\Entity\Bucket;
 use HttpSoft\Message\UploadedFile;
 use Psr\Http\Message\StreamInterface;
+use Mailery\Storage\BucketInterface;
+use Mailery\Storage\LocationInterface;
 
 class FileValueObject
 {
+    /**
+     * @var string
+     */
+    private string $title;
+
+    /**
+     * @var string
+     */
+    private string $mimeType;
+
     /**
      * @var Brand
      */
     private Brand $brand;
 
     /**
-     * @var string
+     * @var BucketInterface
      */
-    private string $name;
+    private BucketInterface $bucket;
 
     /**
-     * @var string
+     * @var LocationInterface
      */
-    private string $location;
-
-    /**
-     * @var Bucket
-     */
-    private Bucket $bucket;
+    private LocationInterface $location;
 
     /**
      * @var StreamInterface
@@ -51,11 +57,27 @@ class FileValueObject
     public static function fromUploadedFile(UploadedFile $uploadedFile): self
     {
         $new = new self();
-
-        $new->name = $uploadedFile->getClientFilename() ?? 'Generated file name';
+        $new->title = $uploadedFile->getClientFilename();
+        $new->mimeType = $uploadedFile->getClientMediaType();
         $new->stream = $uploadedFile->getStream();
 
         return $new;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
     }
 
     /**
@@ -67,27 +89,19 @@ class FileValueObject
     }
 
     /**
-     * @return string
+     * @return BucketInterface
      */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLocation(): string
-    {
-        return $this->location;
-    }
-
-    /**
-     * @return Bucket
-     */
-    public function getBucket(): Bucket
+    public function getBucket(): BucketInterface
     {
         return $this->bucket;
+    }
+
+    /**
+     * @return LocationInterface
+     */
+    public function getLocation(): LocationInterface
+    {
+        return $this->location;
     }
 
     /**
@@ -111,10 +125,10 @@ class FileValueObject
     }
 
     /**
-     * @param Bucket $bucket
+     * @param BucketInterface $bucket
      * @return self
      */
-    public function withBucket(Bucket $bucket): self
+    public function withBucket(BucketInterface $bucket): self
     {
         $new = clone $this;
         $new->bucket = $bucket;
@@ -123,10 +137,10 @@ class FileValueObject
     }
 
     /**
-     * @param string $location
+     * @param LocationInterface $location
      * @return self
      */
-    public function withLocation(string $location): self
+    public function withLocation(LocationInterface $location): self
     {
         $new = clone $this;
         $new->location = $location;

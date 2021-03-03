@@ -37,9 +37,8 @@ class FileRepository extends Repository
     {
         $repo = clone $this;
         $repo->select
-            ->with('bucket')
             ->andWhere([
-                'bucket.brand_id' => $brand->getId(),
+                'brand_id' => $brand->getId(),
             ]);
 
         return $repo;

@@ -22,6 +22,7 @@
         "httpsoft/http-message": "^1.0.5",
         "maileryio/mailery-common": "dev-master",
         "maileryio/mailery-web": "dev-master",
+        "symfony/mime": "^5.2",
         "yiisoft/router": "^3.0@dev",
         "yiisoft/yii-filesystem": "^3.0@dev"
     },

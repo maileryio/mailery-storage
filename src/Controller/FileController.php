@@ -15,6 +15,7 @@ namespace Mailery\Storage\Controller;
 use Mailery\Brand\BrandLocatorInterface as BrandLocator;
 use Mailery\Storage\Service\StorageService;
 use Mailery\Storage\Repository\FileRepository;
+use Mailery\Storage\Filesystem\FileInfo;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -31,6 +32,11 @@ class FileController
     private StorageService $storageService;
 
     /**
+     * @var FileInfo
+     */
+    private FileInfo $fileInfo;
+
+    /**
      * @var FileRepository
      */
     private FileRepository $fileRepository;
@@ -38,17 +44,20 @@ class FileController
     /**
      * @param ResponseFactory $responseFactory
      * @param StorageService $storageService
+     * @param FileInfo $fileInfo
      * @param FileRepository $fileRepository
      * @param BrandLocator $brandLocator
      */
     public function __construct(
         ResponseFactory $responseFactory,
         StorageService $storageService,
+        FileInfo $fileInfo,
         FileRepository $fileRepository,
         BrandLocator $brandLocator
     ) {
         $this->responseFactory = $responseFactory;
         $this->storageService = $storageService;
+        $this->fileInfo = $fileInfo;
         $this->fileRepository = $fileRepository
             ->withBrand($brandLocator->getBrand());
     }
@@ -62,8 +71,7 @@ class FileController
             return $this->responseFactory->createResponse(404);
         }
 
-        $fileInfo = $this->storageService->getFileInfo($file);
-
+        $fileInfo = $this->fileInfo->withFile($file);
         if (!$fileInfo->fileExists()) {
             return $this->responseFactory->createResponse(404);
         }
@@ -77,7 +85,7 @@ class FileController
 
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . basename($file->getName()));
+        header('Content-Disposition: attachment; filename=' . basename($file->getTitle()));
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');

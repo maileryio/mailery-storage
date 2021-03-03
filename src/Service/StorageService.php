@@ -14,10 +14,11 @@ namespace Mailery\Storage\Service;
 
 use Mailery\Storage\Entity\File;
 use Mailery\Storage\Exception\FileAlreadyExistsException;
-use Mailery\Storage\Provider\FilesystemProvider;
-use Mailery\Storage\ValueObject\BucketValueObject;
 use Mailery\Storage\ValueObject\FileValueObject;
 use Mailery\Storage\Filesystem\FileInfo;
+use Mailery\Storage\Generator\LocationGenerator;
+use Mailery\Storage\Resolver\LocationResolver;
+use Mailery\Storage\Provider\FilesystemProvider;
 
 class StorageService
 {
@@ -27,9 +28,9 @@ class StorageService
     private FileService $fileService;
 
     /**
-     * @var BucketService
+     * @var LocationGenerator
      */
-    private BucketService $bucketService;
+    private LocationGenerator $locationGenerator;
 
     /**
      * @var FilesystemProvider
@@ -38,46 +39,41 @@ class StorageService
 
     /**
      * @param FileService $fileService
-     * @param BucketService $bucketService
+     * @param LocationGenerator $locationGenerator
      * @param FilesystemProvider $filesystemProvider
      */
-    public function __construct(FileService $fileService, BucketService $bucketService, FilesystemProvider $filesystemProvider)
-    {
+    public function __construct(
+        FileService $fileService,
+        LocationGenerator $locationGenerator,
+        FilesystemProvider $filesystemProvider
+    ) {
         $this->fileService = $fileService;
-        $this->bucketService = $bucketService;
+        $this->locationGenerator = $locationGenerator;
         $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
      * @param FileValueObject $fileValueObject
-     * @param BucketValueObject $bucketValueObject
      * @throws FileAlreadyExistsException
      * @return File
      */
-    public function create(FileValueObject $fileValueObject, BucketValueObject $bucketValueObject): File
+    public function create(FileValueObject $fileValueObject): File
     {
-        $location = $fileValueObject->getLocation();
-        $filesystem = $this->filesystemProvider->getFilesystem($bucketValueObject->getFilesystem());
+        // TODO: need to use concurently strategy, e.g. mutex or lock file
 
-        if ($filesystem->fileExists($location)) {
+        $bucket = $fileValueObject->getBucket();
+        $location = $this->locationGenerator->generate($bucket, $fileValueObject);
+
+        if ($bucket->getFilesystem()->fileExists((string) $location)) {
             throw new FileAlreadyExistsException('File already exists with location "' . $location . '"');
         }
 
-        $filesystem->write($location, $fileValueObject->getStream()->getContents());
-
-        $bucket = $this->bucketService->getOrCreate($bucketValueObject);
+        $bucket->getFilesystem()->write((string) $location, $fileValueObject->getStream()->getContents());
 
         return $this->fileService->create(
-            $fileValueObject->withBucket($bucket)
+            $fileValueObject
+                ->withLocation($location)
+                ->withBucket($bucket)
         );
-    }
-
-    /**
-     * @param File $file
-     * @return FileInfo
-     */
-    public function getFileInfo(File $file): FileInfo
-    {
-        return (new FileInfo($this->filesystemProvider))->withFile($file);
     }
 }

@@ -39,9 +39,11 @@ class FileService
     public function create(FileValueObject $valueObject): File
     {
         $file = (new File())
-            ->setBucket($valueObject->getBucket())
-            ->setName($valueObject->getName())
-            ->setLocation($valueObject->getLocation())
+            ->setBrand($valueObject->getBrand())
+            ->setBucket($valueObject->getBucket()->getName())
+            ->setName($valueObject->getLocation()->getFileName())
+            ->setTitle($valueObject->getTitle())
+            ->setMimeType($valueObject->getMimeType())
         ;
 
         $tr = new Transaction($this->orm);

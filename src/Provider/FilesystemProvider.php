@@ -12,30 +12,33 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Provider;
 
-use Psr\Container\ContainerInterface as Container;
+use Mailery\Storage\Entity\File;
+use Mailery\Storage\Model\BucketList;
 use Yiisoft\Yii\Filesystem\FilesystemInterface;
 
 class FilesystemProvider
 {
     /**
-     * @var Container
+     * @var BucketList
      */
-    private Container $container;
+    private BucketList $bucketList;
 
     /**
-     * @param Container $container
+     * @param BucketList $bucketList
      */
-    public function __construct(Container $container)
+    public function __construct(BucketList $bucketList)
     {
-        $this->container = $container;
+        $this->bucketList = $bucketList;
     }
 
     /**
-     * @param string $name
+     * @param File $file
      * @return FilesystemInterface FilesystemInterface
      */
-    public function getFilesystem(string $name): FilesystemInterface
+    public function getFilesystem(File $file): FilesystemInterface
     {
-        return $this->container->get($name);
+        return $this->bucketList
+            ->getByName($file->getBucket())
+            ->getFilesystem();
     }
 }
