@@ -30,11 +30,6 @@ class FileValueObject
     private string $name;
 
     /**
-     * @var string
-     */
-    private string $location;
-
-    /**
      * @var Bucket
      */
     private Bucket $bucket;
@@ -75,14 +70,6 @@ class FileValueObject
     }
 
     /**
-     * @return string
-     */
-    public function getLocation(): string
-    {
-        return $this->location;
-    }
-
-    /**
      * @return Bucket
      */
     public function getBucket(): Bucket
@@ -118,18 +105,6 @@ class FileValueObject
     {
         $new = clone $this;
         $new->bucket = $bucket;
-
-        return $new;
-    }
-
-    /**
-     * @param string $location
-     * @return self
-     */
-    public function withLocation(string $location): self
-    {
-        $new = clone $this;
-        $new->location = $location;
 
         return $new;
     }
