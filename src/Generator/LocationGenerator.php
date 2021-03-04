@@ -13,6 +13,19 @@ use Mailery\Storage\ValueObject\FileValueObject;
 class LocationGenerator
 {
     /**
+     * @var MimeTypes
+     */
+    private MimeTypes $mimeTypes;
+
+    /**
+     * @param MimeTypes $mimeTypes
+     */
+    public function __construct(MimeTypes $mimeTypes)
+    {
+        $this->mimeTypes = $mimeTypes;
+    }
+
+    /**
      * @param BucketInterface $bucket
      * @param FileValueObject $valueObject
      * @return LocationInterface
@@ -50,7 +63,7 @@ class LocationGenerator
     private function buildFileName(FileValueObject $valueObject): string
     {
         $fileName = UuidV5::fromDateTime(new \DateTimeImmutable('now'))->toString();
-        $extensions = (new MimeTypes())->getExtensions($valueObject->getMimeType());
+        $extensions = $this->mimeTypes->getExtensions($valueObject->getMimeType());
 
         $extension = $extensions[0] ?? null;
         if ($extension !== null) {

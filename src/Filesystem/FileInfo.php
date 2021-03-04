@@ -16,6 +16,8 @@ use Mailery\Storage\Entity\File;
 use Mailery\Storage\Provider\FilesystemProvider;
 use Mailery\Storage\Resolver\LocationResolver;
 use Yiisoft\Yii\Filesystem\FilesystemInterface;
+use HttpSoft\Message\Stream;
+use Psr\Http\Message\StreamInterface;
 
 class FileInfo
 {
@@ -78,30 +80,12 @@ class FileInfo
     }
 
     /**
-     * @return resource
+     * @return StreamInterface
      */
-    public function getStream()
+    public function getStream(): StreamInterface
     {
-        return $this->getFilesystem()
-            ->readStream($this->getLocation());
-    }
-
-    /**
-     * @return int
-     */
-    public function getLineCount(): int
-    {
-        $lineCount = 0;
-        $fileStream = $this->getStream();
-
-        while (!feof($fileStream)) {
-            if (($line = fgets($fileStream, 4096)) !== false) {
-                $lineCount = $lineCount + substr_count($line, PHP_EOL);
-            }
-        }
-        fclose($fileStream);
-
-        return $lineCount;
+        $resource = $this->getFilesystem()->readStream($this->getLocation());
+        return new Stream($resource);
     }
 
     /**

@@ -76,8 +76,7 @@ class FileController
             return $this->responseFactory->createResponse(404);
         }
 
-        $fileStream = $fileInfo->getStream();
-        $fileStat = fstat($fileStream);
+        $stream = $fileInfo->getStream();
 
         if (ob_get_level()) {
             ob_end_clean();
@@ -90,11 +89,12 @@ class FileController
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
-        header('Content-Length: ' . $fileStat['size']);
+        header('Content-Length: ' . $stream->getSize());
 
-        while (!feof($fileStream)) {
-            print fread($fileStream, 1024);
+        while (!$stream->eof()) {
+            print $stream->read(1024);
         }
-        fclose($fileStream);
+
+        $stream->close();
     }
 }

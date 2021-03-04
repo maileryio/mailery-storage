@@ -15,9 +15,7 @@ namespace Mailery\Storage\Service;
 use Mailery\Storage\Entity\File;
 use Mailery\Storage\Exception\FileAlreadyExistsException;
 use Mailery\Storage\ValueObject\FileValueObject;
-use Mailery\Storage\Filesystem\FileInfo;
 use Mailery\Storage\Generator\LocationGenerator;
-use Mailery\Storage\Resolver\LocationResolver;
 use Mailery\Storage\Provider\FilesystemProvider;
 
 class StorageService
@@ -68,7 +66,10 @@ class StorageService
             throw new FileAlreadyExistsException('File already exists with location "' . $location . '"');
         }
 
-        $bucket->getFilesystem()->write((string) $location, $fileValueObject->getStream()->getContents());
+        $bucket->getFilesystem()->write(
+            (string) $location,
+            $fileValueObject->getStream()->getContents()
+        );
 
         return $this->fileService->create(
             $fileValueObject
