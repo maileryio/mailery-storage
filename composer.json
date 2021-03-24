@@ -28,7 +28,6 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
-        "hiqdev/composer-config-plugin": "^1.0",
         "phan/phan": "^2.4",
         "phpunit/phpunit": "^9.0"
     },
@@ -52,10 +51,13 @@
             "dev-master": "1.0.x-dev"
         },
         "config-plugin": {
-            "common": "config/common.php",
-            "params": "config/params.php",
-            "providers": "config/providers.php",
-            "providers-web": "config/providers-web.php"
+            "common": "common.php",
+            "params": "params.php",
+            "providers": "providers.php",
+            "providers-web": "providers-web.php"
+        },
+        "config-plugin-options": {
+            "source-directory": "config"
         }
     },
     "config": {
