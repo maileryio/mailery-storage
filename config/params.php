@@ -60,7 +60,9 @@ return [
             'adapter' => [
                 '__class' => LocalFilesystemAdapter::class,
                 '__construct()' => [
-                    '@runtime',
+                    static function (Aliases $aliases) {
+                        return $aliases->get('@runtime');
+                    },
                     PortableVisibilityConverter::fromArray([
                         'file' => [
                             'public' => 0644,
