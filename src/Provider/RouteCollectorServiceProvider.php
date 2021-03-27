@@ -17,12 +17,11 @@ final class RouteCollectorServiceProvider extends ServiceProvider
         $collector = $container->get(RouteCollectorInterface::class);
 
         $collector->addGroup(
-            Group::create(
-                '/brand/{brandId:\d+}',
-                [
-                    Route::get('/storage/file/download/{id:\d+}', [FileController::class, 'download'])
-                        ->name('/storage/file/download'),
-                ]
+            Group::create('/brand/{brandId:\d+}')
+                ->routes(
+                    Route::get('/storage/file/download/{id:\d+}')
+                        ->name('/storage/file/download')
+                        ->action([FileController::class, 'download'])
             )
         );
     }
