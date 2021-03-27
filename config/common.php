@@ -12,6 +12,7 @@ use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use Mailery\Storage\Filesystem\FileStorageInterface;
 use Mailery\Storage\Filesystem\RuntimeStorageInterface;
 use Yiisoft\Yii\Filesystem\Filesystem;
+use Yiisoft\Aliases\Aliases;
 
 return [
     BucketList::class => [
@@ -26,14 +27,9 @@ return [
             ->getRepository(File::class);
     },
 
-    FileStorageInterface::class => static function () use($params) {
-        $aliases = $params['yiisoft/aliases']['aliases'] ?? [];
-        if (!isset($aliases['@storage'])) {
-            throw new \RuntimeException('Alias of the storage directory is not defined.');
-        }
-
+    FileStorageInterface::class => static function (Aliases $aliases) {
         $adapter = new LocalFilesystemAdapter(
-            $aliases['@storage'],
+            $aliases->get('@storage'),
             PortableVisibilityConverter::fromArray([
                 'file' => [
                     'public' => 0644,
@@ -48,16 +44,11 @@ return [
             LocalFilesystemAdapter::DISALLOW_LINKS
         );
 
-        return new Filesystem($adapter, $aliases);
+        return new Filesystem($adapter, $aliases->getAll());
     },
-    RuntimeStorageInterface::class => static function () use($params) {
-        $aliases = $params['yiisoft/aliases']['aliases'] ?? [];
-        if (!isset($aliases['@runtime'])) {
-            throw new \RuntimeException('Alias of the runtime directory is not defined.');
-        }
-
+    RuntimeStorageInterface::class => static function (Aliases $aliases) {
         $adapter = new LocalFilesystemAdapter(
-            $aliases['@runtime'],
+            $aliases->get('@runtime'),
             PortableVisibilityConverter::fromArray([
                 'file' => [
                     'public' => 0644,
@@ -72,6 +63,6 @@ return [
             LocalFilesystemAdapter::DISALLOW_LINKS
         );
 
-        return new Filesystem($adapter, $aliases);
+        return new Filesystem($adapter, $aliases->getAll());
     },
 ];
