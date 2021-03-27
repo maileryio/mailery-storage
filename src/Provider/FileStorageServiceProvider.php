@@ -14,7 +14,7 @@ namespace Mailery\Storage\Provider;
 
 use League\Flysystem\FilesystemAdapter;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Di\Container;
+use Psr\Container\ContainerInterface;
 use Yiisoft\Di\Support\ServiceProvider;
 use Yiisoft\Factory\Factory;
 use Yiisoft\Yii\Filesystem\FileStorageConfigs;
@@ -22,7 +22,7 @@ use Yiisoft\Yii\Filesystem\Filesystem;
 
 final class FileStorageServiceProvider extends ServiceProvider
 {
-    public function register(Container $container): void
+    public function register(ContainerInterface $container): void
     {
         $factory = new Factory();
         $aliases = $container->get(Aliases::class);
