@@ -15,12 +15,12 @@ namespace Mailery\Storage\Provider;
 use League\Flysystem\FilesystemAdapter;
 use Yiisoft\Aliases\Aliases;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Di\Support\ServiceProvider;
 use Yiisoft\Factory\Factory;
 use Yiisoft\Yii\Filesystem\FileStorageConfigs;
 use Yiisoft\Yii\Filesystem\Filesystem;
+use Yiisoft\Di\Contracts\ServiceProviderInterface;
 
-final class FileStorageServiceProvider extends ServiceProvider
+final class FileStorageServiceProvider implements ServiceProviderInterface
 {
     public function register(ContainerInterface $container): void
     {
@@ -47,7 +47,7 @@ final class FileStorageServiceProvider extends ServiceProvider
 
     private function validateAdapter(string $alias, array $config): void
     {
-        $adapter = $config['adapter']['__class'] ?? false;
+        $adapter = $config['adapter']['class'] ?? false;
         if (!$adapter) {
             throw new \RuntimeException("Adapter is not defined in the \"$alias\" storage config.");
         }
@@ -55,5 +55,21 @@ final class FileStorageServiceProvider extends ServiceProvider
         if (!is_subclass_of($adapter, FilesystemAdapter::class)) {
             throw new \RuntimeException('Adapter must implement \League\Flysystem\FilesystemAdapter interface.');
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDefinitions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getExtensions(): array
+    {
+        return [];
     }
 }
