@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\ValueObject;
 
-use Mailery\Brand\Entity\Brand;
 use HttpSoft\Message\UploadedFile;
 use Psr\Http\Message\StreamInterface;
 use Mailery\Storage\BucketInterface;
@@ -29,11 +28,6 @@ class FileValueObject
      * @var string
      */
     private string $mimeType;
-
-    /**
-     * @var Brand
-     */
-    private Brand $brand;
 
     /**
      * @var BucketInterface
@@ -95,14 +89,6 @@ class FileValueObject
     }
 
     /**
-     * @return Brand
-     */
-    public function getBrand(): Brand
-    {
-        return $this->brand;
-    }
-
-    /**
      * @return BucketInterface
      */
     public function getBucket(): BucketInterface
@@ -124,18 +110,6 @@ class FileValueObject
     public function getStream(): StreamInterface
     {
         return $this->stream;
-    }
-
-    /**
-     * @param Brand $brand
-     * @return self
-     */
-    public function withBrand(Brand $brand): self
-    {
-        $new = clone $this;
-        $new->brand = $brand;
-
-        return $new;
     }
 
     /**

@@ -13,9 +13,10 @@ declare(strict_types=1);
 namespace Mailery\Storage\Service;
 
 use Cycle\ORM\ORMInterface;
-use Cycle\ORM\Transaction;
 use Mailery\Storage\Entity\File;
 use Mailery\Storage\ValueObject\FileValueObject;
+use Yiisoft\Yii\Cycle\Data\Writer\EntityWriter;
+use Mailery\Brand\Entity\Brand;
 
 class FileService
 {
@@ -23,6 +24,11 @@ class FileService
      * @var ORMInterface
      */
     private ORMInterface $orm;
+
+    /**
+     * @var Brand
+     */
+    private Brand $brand;
 
     /**
      * @param ORMInterface $orm
@@ -33,22 +39,32 @@ class FileService
     }
 
     /**
+     * @param Brand $brand
+     * @return self
+     */
+    public function withBrand(Brand $brand): self
+    {
+        $new = clone $this;
+        $new->brand = $brand;
+
+        return $new;
+    }
+
+    /**
      * @param FileValueObject $valueObject
      * @return File
      */
     public function create(FileValueObject $valueObject): File
     {
         $file = (new File())
-            ->setBrand($valueObject->getBrand())
+            ->setBrand($this->brand)
             ->setBucket($valueObject->getBucket()->getName())
             ->setName($valueObject->getLocation()->getFileName())
             ->setTitle($valueObject->getTitle())
             ->setMimeType($valueObject->getMimeType())
         ;
 
-        $tr = new Transaction($this->orm);
-        $tr->persist($file);
-        $tr->run();
+        (new EntityWriter($this->orm))->write([$file]);
 
         return $file;
     }

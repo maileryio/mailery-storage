@@ -17,6 +17,7 @@ use Mailery\Storage\Exception\FileAlreadyExistsException;
 use Mailery\Storage\ValueObject\FileValueObject;
 use Mailery\Storage\Generator\LocationGenerator;
 use Mailery\Storage\Provider\FilesystemProvider;
+use Mailery\Brand\Entity\Brand;
 
 class StorageService
 {
@@ -36,6 +37,11 @@ class StorageService
     private FilesystemProvider $filesystemProvider;
 
     /**
+     * @var Brand
+     */
+    private Brand $brand;
+
+    /**
      * @param FileService $fileService
      * @param LocationGenerator $locationGenerator
      * @param FilesystemProvider $filesystemProvider
@@ -48,6 +54,18 @@ class StorageService
         $this->fileService = $fileService;
         $this->locationGenerator = $locationGenerator;
         $this->filesystemProvider = $filesystemProvider;
+    }
+
+    /**
+     * @param Brand $brand
+     * @return self
+     */
+    public function withBrand(Brand $brand): self
+    {
+        $new = clone $this;
+        $new->brand = $brand;
+
+        return $new;
     }
 
     /**
@@ -71,10 +89,12 @@ class StorageService
             $fileValueObject->getStream()->getContents()
         );
 
-        return $this->fileService->create(
-            $fileValueObject
-                ->withLocation($location)
-                ->withBucket($bucket)
-        );
+        return $this->fileService
+            ->withBrand($this->brand)
+            ->create(
+                $fileValueObject
+                    ->withLocation($location)
+                    ->withBucket($bucket)
+            );
     }
 }
