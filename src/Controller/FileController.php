@@ -68,12 +68,12 @@ class FileController
     {
         $fileId = $request->getAttribute('id');
         if (empty($fileId) || ($file = $this->fileRepository->findByPK($fileId)) === null) {
-            return $this->responseFactory->createResponse(404);
+            return $this->responseFactory->createResponse(Status::NOT_FOUND);
         }
 
         $fileInfo = $this->fileInfo->withFile($file);
         if (!$fileInfo->fileExists()) {
-            return $this->responseFactory->createResponse(404);
+            return $this->responseFactory->createResponse(Status::NOT_FOUND);
         }
 
         $stream = $fileInfo->getStream();
