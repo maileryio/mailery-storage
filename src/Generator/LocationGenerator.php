@@ -62,7 +62,7 @@ class LocationGenerator
      */
     private function buildFileName(FileValueObject $valueObject): string
     {
-        $fileName = UuidV5::fromDateTime(new \DateTimeImmutable('now'))->toString();
+        $fileName = UuidV5::fromDateTime(new \DateTimeImmutable())->toString();
         $extensions = $this->mimeTypes->getExtensions($valueObject->getMimeType());
 
         $extension = $extensions[0] ?? null;
