@@ -45,31 +45,17 @@ class FileValueObject
     private StreamInterface $stream;
 
     /**
-     * @param string $title
-     * @param string $mimeType
-     * @param StreamInterface $stream
-     */
-    public function __construct(
-        string $title,
-        string $mimeType,
-        StreamInterface $stream
-    ) {
-        $this->title = $title;
-        $this->mimeType = $mimeType;
-        $this->stream = $stream;
-    }
-
-    /**
      * @param UploadedFile $uploadedFile
      * @return self
      */
     public static function fromUploadedFile(UploadedFile $uploadedFile): self
     {
-        return new self(
-            $uploadedFile->getClientFilename(),
-            $uploadedFile->getClientMediaType(),
-            $uploadedFile->getStream()
-        );
+        $new = new self();
+        $new->title = $uploadedFile->getClientFilename();
+        $new->mimeType = $uploadedFile->getClientMediaType();
+        $new->stream = $uploadedFile->getStream();
+
+        return $new;
     }
 
     /**

@@ -7,24 +7,13 @@ use Mailery\Storage\LocationInterface;
 class Location implements LocationInterface
 {
     /**
-     * @var string
-     */
-    private string $basePath;
-
-    /**
-     * @var string
-     */
-    private string $fileName;
-
-    /**
      * @param string $basePath
      * @param string $fileName
      */
-    public function __construct(string $basePath, string $fileName)
-    {
-        $this->basePath = $basePath;
-        $this->fileName = $fileName;
-    }
+    public function __construct(
+        private string $basePath,
+        private string $fileName
+    ) {}
 
     /**
      * @return string

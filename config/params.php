@@ -2,13 +2,8 @@
 
 declare(strict_types=1);
 
-/**
- * File storage module for Mailery Platform
- * @link      https://github.com/maileryio/mailery-storage
- * @package   Mailery\Storage
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2020, Mailery (https://mailery.io/)
- */
+use Yiisoft\Definitions\DynamicReference;
+use Mailery\Storage\Entity\File;
 
 return [
     'yiisoft/aliases' => [
@@ -20,6 +15,17 @@ return [
     'yiisoft/yii-cycle' => [
         'entity-paths' => [
             '@vendor/maileryio/mailery-storage/src/Entity',
+        ],
+    ],
+
+    'maileryio/mailery-activity-log' => [
+        'entity-groups' => [
+            'storage' => [
+                'label' => DynamicReference::to(static fn () => 'Storage'),
+                'entities' => [
+                    File::class,
+                ],
+            ],
         ],
     ],
 

@@ -13,17 +13,11 @@ use Mailery\Storage\ValueObject\FileValueObject;
 class LocationGenerator
 {
     /**
-     * @var MimeTypes
-     */
-    private MimeTypes $mimeTypes;
-
-    /**
      * @param MimeTypes $mimeTypes
      */
-    public function __construct(MimeTypes $mimeTypes)
-    {
-        $this->mimeTypes = $mimeTypes;
-    }
+    public function __construct(
+        private MimeTypes $mimeTypes
+    ) {}
 
     /**
      * @param BucketInterface $bucket

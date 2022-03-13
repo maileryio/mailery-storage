@@ -28,26 +28,13 @@ class FileInfo
     private File $file;
 
     /**
-     * @var FilesystemProvider
-     */
-    private FilesystemProvider $filesystemProvider;
-
-    /**
-     * @var LocationResolver
-     */
-    private LocationResolver $locationResolver;
-
-    /**
      * @param FilesystemProvider $filesystemProvider
      * @param LocationResolver $locationResolver
      */
     public function __construct(
-        FilesystemProvider $filesystemProvider,
-        LocationResolver $locationResolver
-    ) {
-        $this->filesystemProvider = $filesystemProvider;
-        $this->locationResolver = $locationResolver;
-    }
+        private FilesystemProvider $filesystemProvider,
+        private LocationResolver $locationResolver
+    ) {}
 
     /**
      * @param File $file

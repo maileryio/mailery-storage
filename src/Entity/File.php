@@ -15,53 +15,53 @@ namespace Mailery\Storage\Entity;
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityTrait;
 use Mailery\Brand\Entity\Brand;
+use Mailery\Storage\Repository\FileRepository;
+use Mailery\Activity\Log\Mapper\LoggableMapper;
+use Cycle\Annotated\Annotation\Relation\BelongsTo;
+use Cycle\ORM\Entity\Behavior;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Column;
 
-/**
- * @Cycle\Annotated\Annotation\Entity(
- *      table = "files",
- *      repository = "Mailery\Storage\Repository\FileRepository",
- *      mapper = "Mailery\Storage\Mapper\DefaultMapper"
- * )
- */
+#[Entity(
+    table: 'files',
+    repository: FileRepository::class,
+    mapper: LoggableMapper::class
+)]
+#[Behavior\CreatedAt(
+    field: 'createdAt',
+    column: 'created_at'
+)]
+#[Behavior\UpdatedAt(
+    field: 'updatedAt',
+    column: 'updated_at'
+)]
 class File implements LoggableEntityInterface
 {
     use LoggableEntityTrait;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "primary")
-     * @var int|null
-     */
-    private $id;
+    #[Column(type: 'primary')]
+    private int $id;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "string(255)")
-     * @var string
-     */
-    private $name;
+    #[Column(type: 'string(255)')]
+    private string $name;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "string(255)")
-     * @var string
-     */
-    private $title;
+    #[Column(type: 'string(255)')]
+    private string $title;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "string(255)")
-     * @var string
-     */
-    private $mimeType;
+    #[Column(type: 'string(255)')]
+    private string $mimeType;
 
-    /**
-     * @Cycle\Annotated\Annotation\Relation\BelongsTo(target = "Mailery\Brand\Entity\Brand", nullable = false)
-     * @var Brand
-     */
-    private $brand;
+    #[BelongsTo(target: Brand::class)]
+    private Brand $brand;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "string(255)")
-     * @var string
-     */
-    private $bucket;
+    #[Column(type: 'string(255)')]
+    private string $bucket;
+
+    #[Column(type: 'datetime')]
+    private \DateTimeImmutable $createdAt;
+
+    #[Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @return string

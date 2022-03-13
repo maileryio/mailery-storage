@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Mailery\Storage\Controller;
 
 use Mailery\Brand\BrandLocatorInterface as BrandLocator;
-use Mailery\Storage\Service\StorageService;
 use Mailery\Storage\Repository\FileRepository;
 use Mailery\Storage\Filesystem\FileInfo;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
@@ -22,44 +21,18 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class FileController
 {
     /**
-     * @var ResponseFactory
-     */
-    private ResponseFactory $responseFactory;
-
-    /**
-     * @var StorageService
-     */
-    private StorageService $storageService;
-
-    /**
-     * @var FileInfo
-     */
-    private FileInfo $fileInfo;
-
-    /**
-     * @var FileRepository
-     */
-    private FileRepository $fileRepository;
-
-    /**
      * @param ResponseFactory $responseFactory
-     * @param StorageService $storageService
      * @param FileInfo $fileInfo
      * @param FileRepository $fileRepository
      * @param BrandLocator $brandLocator
      */
     public function __construct(
-        ResponseFactory $responseFactory,
-        StorageService $storageService,
-        FileInfo $fileInfo,
-        FileRepository $fileRepository,
+        private ResponseFactory $responseFactory,
+        private FileInfo $fileInfo,
+        private FileRepository $fileRepository,
         BrandLocator $brandLocator
     ) {
-        $this->responseFactory = $responseFactory;
-        $this->storageService = $storageService;
-        $this->fileInfo = $fileInfo;
-        $this->fileRepository = $fileRepository
-            ->withBrand($brandLocator->getBrand());
+        $this->fileRepository = $fileRepository->withBrand($brandLocator->getBrand());
     }
     /**
      * @param Request $request

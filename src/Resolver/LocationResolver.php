@@ -10,17 +10,11 @@ use Mailery\Storage\Model\BucketList;
 class LocationResolver
 {
     /**
-     * @var BucketList
-     */
-    private BucketList $bucketList;
-
-    /**
      * @param BucketList $bucketList
      */
-    public function __construct(BucketList $bucketList)
-    {
-        $this->bucketList = $bucketList;
-    }
+    public function __construct(
+        private BucketList $bucketList
+    ) {}
 
     /**
      * @param File $file

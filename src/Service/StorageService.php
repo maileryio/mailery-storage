@@ -22,21 +22,6 @@ use Mailery\Brand\Entity\Brand;
 class StorageService
 {
     /**
-     * @var FileService
-     */
-    private FileService $fileService;
-
-    /**
-     * @var LocationGenerator
-     */
-    private LocationGenerator $locationGenerator;
-
-    /**
-     * @var FilesystemProvider
-     */
-    private FilesystemProvider $filesystemProvider;
-
-    /**
      * @var Brand
      */
     private Brand $brand;
@@ -44,17 +29,11 @@ class StorageService
     /**
      * @param FileService $fileService
      * @param LocationGenerator $locationGenerator
-     * @param FilesystemProvider $filesystemProvider
      */
     public function __construct(
-        FileService $fileService,
-        LocationGenerator $locationGenerator,
-        FilesystemProvider $filesystemProvider
-    ) {
-        $this->fileService = $fileService;
-        $this->locationGenerator = $locationGenerator;
-        $this->filesystemProvider = $filesystemProvider;
-    }
+        private FileService $fileService,
+        private LocationGenerator $locationGenerator
+    ) {}
 
     /**
      * @param Brand $brand
