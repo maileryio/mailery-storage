@@ -20,16 +20,6 @@ use Mailery\Storage\LocationInterface;
 class FileValueObject
 {
     /**
-     * @var string
-     */
-    private string $title;
-
-    /**
-     * @var string
-     */
-    private string $mimeType;
-
-    /**
      * @var BucketInterface
      */
     private BucketInterface $bucket;
@@ -40,9 +30,15 @@ class FileValueObject
     private LocationInterface $location;
 
     /**
-     * @var StreamInterface
+     * @param string $title
+     * @param string $mimeType
+     * @param StreamInterface $stream
      */
-    private StreamInterface $stream;
+    public function __construct(
+        private string $title,
+        private string $mimeType,
+        private StreamInterface $stream
+    ) {}
 
     /**
      * @param UploadedFile $uploadedFile
@@ -50,12 +46,11 @@ class FileValueObject
      */
     public static function fromUploadedFile(UploadedFile $uploadedFile): self
     {
-        $new = new self();
-        $new->title = $uploadedFile->getClientFilename();
-        $new->mimeType = $uploadedFile->getClientMediaType();
-        $new->stream = $uploadedFile->getStream();
-
-        return $new;
+        return new self(
+            $uploadedFile->getClientFilename(),
+            $uploadedFile->getClientMediaType(),
+            $uploadedFile->getStream()
+        );
     }
 
     /**

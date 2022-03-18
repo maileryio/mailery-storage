@@ -16,7 +16,6 @@ use Mailery\Storage\Entity\File;
 use Mailery\Storage\Exception\FileAlreadyExistsException;
 use Mailery\Storage\ValueObject\FileValueObject;
 use Mailery\Storage\Generator\LocationGenerator;
-use Mailery\Storage\Provider\FilesystemProvider;
 use Mailery\Brand\Entity\Brand;
 
 class StorageService
