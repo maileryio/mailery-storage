@@ -25,7 +25,7 @@ use Cycle\Annotated\Annotation\Column;
 #[Entity(
     table: 'files',
     repository: FileRepository::class,
-    mapper: LoggableMapper::class
+    mapper: LoggableMapper::class,
 )]
 #[Behavior\CreatedAt(
     field: 'createdAt',
