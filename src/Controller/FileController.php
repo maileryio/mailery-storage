@@ -17,6 +17,7 @@ use Mailery\Storage\Repository\FileRepository;
 use Mailery\Storage\Filesystem\FileInfo;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Yiisoft\Http\Status;
 
 class FileController
 {
