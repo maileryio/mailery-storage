@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Mailery\Storage\Service;
 
-use Cycle\ORM\ORMInterface;
+use Cycle\ORM\EntityManagerInterface;
 use Mailery\Storage\Entity\File;
 use Mailery\Storage\ValueObject\FileValueObject;
 use Yiisoft\Yii\Cycle\Data\Writer\EntityWriter;
@@ -26,10 +26,10 @@ class FileService
     private Brand $brand;
 
     /**
-     * @param ORMInterface $orm
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        private ORMInterface $orm
+        private EntityManagerInterface $entityManager
     ) {}
 
     /**
@@ -58,7 +58,7 @@ class FileService
             ->setMimeType($valueObject->getMimeType())
         ;
 
-        (new EntityWriter($this->orm))->write([$file]);
+        (new EntityWriter($this->entityManager))->write([$file]);
 
         return $file;
     }
