@@ -20,6 +20,7 @@ use Mailery\Brand\Entity\Brand;
 
 class StorageService
 {
+
     /**
      * @var Brand
      */
@@ -55,7 +56,9 @@ class StorageService
     {
         // TODO: need to use concurently strategy, e.g. mutex or lock file
 
-        $bucket = $fileValueObject->getBucket();
+        $bucket = $fileValueObject->getBucket()
+            ->withBrand($this->brand);
+
         $location = $this->locationGenerator->generate($bucket, $fileValueObject);
 
         if ($bucket->getFilesystem()->fileExists((string) $location)) {

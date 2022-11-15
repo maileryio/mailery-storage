@@ -22,7 +22,8 @@ class LocationResolver
      */
     public function resolve(File $file): LocationInterface
     {
-        $bucket = $this->bucketList->getByName($file->getBucket());
+        $bucket = $this->bucketList->getByName($file->getBucket())
+            ->withBrand($file->getBrand());
 
         return new Location(
             $bucket->getPath(),

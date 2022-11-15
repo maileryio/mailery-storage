@@ -3,9 +3,17 @@
 namespace Mailery\Storage;
 
 use Yiisoft\Yii\Filesystem\FilesystemInterface;
+use Mailery\Brand\Entity\Brand;
 
 interface BucketInterface
 {
+
+    /**
+     * @param Brand $brand
+     * @return self
+     */
+    public function withBrand(Brand $brand): self;
+
     /**
      * @return string
      */

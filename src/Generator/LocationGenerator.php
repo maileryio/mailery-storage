@@ -12,6 +12,7 @@ use Mailery\Storage\ValueObject\FileValueObject;
 
 class LocationGenerator
 {
+
     /**
      * @param MimeTypes $mimeTypes
      */

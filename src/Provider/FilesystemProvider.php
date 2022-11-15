@@ -31,8 +31,8 @@ class FilesystemProvider
      */
     public function getFilesystem(File $file): FilesystemInterface
     {
-        return $this->bucketList
-            ->getByName($file->getBucket())
-            ->getFilesystem();
+        $bucket = $this->bucketList->getByName($file->getBucket());
+
+        return $bucket->getFilesystem();
     }
 }
